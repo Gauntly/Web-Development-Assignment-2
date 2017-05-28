@@ -1,0 +1,100 @@
+<html>
+<head>
+    <title>Cabs Online</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/helper.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1 class="display-3">Cabs Online Booking System</h1>
+    </div>
+
+<div class="well well-lg">
+    <!--This Form handles Customer Name-->
+    <form class="form-horizontal" method="get" action="" id="Customer-Pickup">
+        <h3 class="display-3">Pickup</h3>
+
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Name</label>
+            <div class="col-lg-3">
+                <input class="form-control" type="text" id="Customer_Name" placeholder="Please Enter your name"
+                       name="Customer_Name" required>
+            </div>
+        </div> <!--Customer Name End-->
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Phone Number</label>
+            <div class="col-lg-3">
+                <input class="form-control" type="tel" id="Customer_Phone_Number" placeholder="Please Enter your phone number" name="Customer_Phone_Number" required>
+            </div>
+        </div> <!--Customer Phone Number End-->
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Street Name</label>
+            <div class="col-lg-3">
+                <input class="form-control" type="text" id="Customer_Pickup_StreetName" placeholder="Please Enter your StreetName" name="Customer_Pickup_StreetName" required>
+            </div>
+        </div> <!--Customer PickUp Address End-->
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Unit Number</label>
+            <div class="col-lg-3">
+                <input class="form-control" type="text" id="Customer_Pickup_Unit" placeholder="Eg. 8B" name="Customer_Pickup_Unit">
+            </div>
+        </div> <!--Customer Unit Number End-->
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Pickup Date</label>
+            <div class="col-lg-3">
+                <input class="form-control" type="datetime-local" id="Customer_Pickup_Date" placeholder="Eg. 23/12/1252" name="Customer_Pickup_Date" autocomplete="on" required>
+            </div>
+        </div> <!--Customer PickUp Date End-->
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Suburb</label>
+            <div class="col-lg-3">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                  <button class="btn btn-primary dropdown-toggle" id="btn_dropdown_pickup" type="button" data-toggle="dropdown">Suburbs<span class="caret"></span></button>
+                            <ul class="dropdown-menu scrollable-menu" id="areaList_pickup"></ul></span>
+                        <input class="form-control" type="text" id="Customer_Pickup_Suburb" placeholder="Please your Suburb" name="Customer_Pickup_Suburb" required>
+                    </div>
+            </div>
+        </div> <!--Customer PickUp Suburb End-->
+
+
+    </form> <!-- Customer Form ends.-->
+</div>  <!--Well ends.-->
+
+    <!--Destination well-->
+    <div class="well well-lg">
+        <form class="form-horizontal" method="get" action="" id="Customer-Destination">
+            <h3 class="display-3">Destination</h3>
+        <!--Customer Destination Suburb-->
+        <div class="form-group form-group">
+            <label class="col-lg-2 control-label" for="formGroupInputLarge">Suburb</label>
+            <div class="col-lg-3">
+                <div class="input-group">
+                        <span class="input-group-btn">
+                  <button class="btn btn-primary dropdown-toggle" id="btn_dropdown_destination" type="button" data-toggle="dropdown">Suburbs
+                        <span class="caret"></span></button>
+                            <ul class="dropdown-menu scrollable-menu" id="areaList_dest"></ul>
+                </span>
+                    <input class="form-control" type="text" id="Customer_Destination_Suburb" placeholder="Please your Suburb" name="Customer_Destination_Suburb" required>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <div class="well well-lg">
+        <form class="text-center">
+            <button class="btn btn-block btn-success btn-lg text-center" onclick="sendData()">Request a Cab!</button>
+        </form>
+    </div>
+
+</div>  <!--Container ends.-->
+</body>
+
+<script type="text/javascript" src="listHelper.js"> </script>
+</html>
+
