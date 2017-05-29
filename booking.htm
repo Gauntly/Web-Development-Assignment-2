@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="css/helper.css">
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-</head>
 
+</head>
 <body>
 <div class="container">
     <div class="jumbotron text-center">
@@ -21,8 +21,8 @@
         <div class="form-group form-group">
             <label class="col-lg-2 control-label" for="formGroupInputLarge">Name</label>
             <div class="col-lg-3">
-                <input class="form-control" type="text" id="Customer_Name" placeholder="Please Enter your name"
-                       name="Customer_Name" required>
+                <input onclick="strip()" class="form-control" type="text" id="Customer_Name" placeholder="Please Enter your name" name="Customer_Name" required>
+                <div id="Customer_Name_Result" aria-hidden="true"></div>
             </div>
         </div> <!--Customer Name End-->
         <div class="form-group form-group">
@@ -60,8 +60,6 @@
                     </div>
             </div>
         </div> <!--Customer PickUp Suburb End-->
-
-
     </form> <!-- Customer Form ends.-->
 </div>  <!--Well ends.-->
 
@@ -87,14 +85,17 @@
     </div>
 
     <div class="well well-lg">
-        <form class="text-center">
-            <button class="btn btn-block btn-success btn-lg text-center" onclick="sendData()">Request a Cab!</button>
-        </form>
+            <button type="button" class="btn btn-block btn-success btn-lg text-center" id="submission">Request a Cab!</button>
+    </div>
+
+    <div id="results">
     </div>
 
 </div>  <!--Container ends.-->
 </body>
-
+<script type="text/javascript" src="bookingFunctions.js"> </script>
 <script type="text/javascript" src="listHelper.js"> </script>
+
+
 </html>
 

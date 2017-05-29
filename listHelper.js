@@ -17,7 +17,6 @@ btn_dest.addEventListener('click', function () {
     btn_dest.removeEventListener('click', arguments.callee);
 });
 
-
 btn.addEventListener('click', function () {
             // btn.removeEventListener('click',function () {});
             var ourRequest = new XMLHttpRequest();
@@ -60,7 +59,6 @@ function renderListDest(data) {
         ul.appendChild(li);
     }
 }
-
     var ul_dest = document.getElementById('areaList_dest');
     var ul = document.getElementById('areaList_pickup');
 

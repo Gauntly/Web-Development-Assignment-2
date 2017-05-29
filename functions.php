@@ -1,11 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Gauntly
- * Date: 28/05/17
- * Time: 2:38 PM
- */
-
-function generateReferenceCode(){
-    return strtoupper(substr(str_shuffle(md5(microtime())),0,6));
+require_once "configureDB.php";
+$connection = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+if (!$connection) {
+    exit;
+}  else {
+    checksExist($connection);
 }
+
+
+
+?>

@@ -17,17 +17,20 @@ function checksExist($connection)
 
 function createTable($connection)
 {
-    $createQuery = "CREATE TABLE CabsOnlineBookings(bookingNumber VARCHAR(255) PRIMARY KEY,
+    $createQuery = "CREATE TABLE CabsOnlineBookings(customer_booking_number VARCHAR(255) PRIMARY KEY,
     customer_name VARCHAR(255),
     customer_phone VARCHAR(255),
-    customer_address VaRCHAR(255))";
+    customer_address VARCHAR(255),
+    customer_destination_address VARCHAR(255),
+    customer_pickup_time VARCHAR(255))";
     mysqli_query($connection, $createQuery);
 }
 //we input dummy values to make sure the database connects and populates with correct information.
 function createData($connection){
-    $dataQuery = "INSERT INTO CabsOnlineBookings(bookingNumber, customer_name, customer_phone,customer_address)
-    VALUES ('RK23131', 'Jim Jefferies', '56273562','69lmao ave'),
-    ('RK22131', 'Jim ', '56673562','69lmao ave')";
+    $dataQuery = "
+    INSERT INTO CabsOnlineBookings(customer_booking_number,customer_name,customer_phone,
+                              customer_address,customer_destination_address,customer_pickup_time)
+    VALUES ('RK23131', 'Jim Jefferies', '56273562','69lmao ave','24 movelol ave', '11:57am')";
     mysqli_query($connection, $dataQuery);
 }
 ?>
