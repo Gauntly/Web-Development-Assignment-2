@@ -1,88 +1,176 @@
 
-var submission = document.getElementById("submission");
+// var submission = document.getElementById("submission");
+var submission = document.getElementById("SubmissionWell");
 var Customer_Address = "";
-submission.onclick = function sendData() {
-    var currentdate = new Date();
-    console.log("sendData Function Triggered.");
+
+var Temp_Customer_Name = "";
+var Temp_Customer_Phone_Number = 5;
+var Temp_Customer_Pickup_StreetName ="";
+var Temp_Customer_Pickup_Suburb = "";
+var Temp_Customer_Pickup_Date;
+var Temp_Customer_Destination_Suburb ="";
+
+var valid_Name = false;
+var valid_PhoneNum = false;
+var valid_StreetName = false;
+var valid_PickupDate = false;
+var valid_Pickup_Suburb = false;
+var valid_Destination_Suburb = false;
+
+function ErrorPost(ErrorElement,Error_message){
+    var Error_Message = Error_message;
+    var Error_CodeBlock = '<div class="alert alert-danger" role="alert">' +
+        '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="false""></span>' +
+        '<span class="sr-only">Error:</span>' + Error_Message +
+        '</div>';
+    ErrorElement.innerHTML  = Error_CodeBlock;
+}
+
+function processName() {
     var Customer_Name = encodeURIComponent(document.getElementById("Customer_Name").value);
-    var Customer_Phone_Number = encodeURIComponent(document.getElementById("Customer_Phone_Number").value);
-    var Customer_Pickup_StreetName = encodeURIComponent(document.getElementById("Customer_Pickup_StreetName").value);
-    var Customer_Pickup_Unit = encodeURIComponent(document.getElementById("Customer_Pickup_Unit").value);
-    var Customer_Pickup_Date = new Date(document.getElementById("Customer_Pickup_Date").value);
-    var Customer_Pickup_Suburb = encodeURIComponent(document.getElementById("Customer_Pickup_Suburb").value);
-    var Customer_Destination_Suburb = encodeURIComponent(document.getElementById("Customer_Destination_Suburb").value);
-    //Simply checks if there was an optional unit number included. If not we correctly format the address.
-
-    function ErrorPost(ErrorElement,Error_message){
-       // var ErrorElement = ErrorElement;
-       var Error_Message = Error_message;
-       // var error = document.getElementById(ErrorElement);
-       var Error_CodeBlock = '<div class="alert alert-danger" role="alert">' +
-            '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="false""></span>' +
-            '<span class="sr-only">Error:</span>' + Error_Message +
-           '</div>';
-        ErrorElement.innerHTML  = Error_CodeBlock;
-    }
-
     if(Customer_Name == ""){
         var ErrorElement = document.getElementById("Customer_Name_Result");
-        ErrorPost(ErrorElement,"You need to enter a name!");
-        // var CustomerError = document.getElementById("Customer_Name_Result");
-        // var CustomerError_CodeBlock = '<div class="alert alert-danger alert-dismissable fade in" role="alert">' +
-        //     '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="false""></span>' +
-        //     '<span class="sr-only">Error:</span>Please enter your name.</div>';
-        // CustomerError.innerHTML  = CustomerError_CodeBlock;
-        // alert("You need to enter a name!");
-    }
+        ErrorPost(ErrorElement," You need to enter a name!");
+        valid_Name = false;
+        checkForm();
+    }else{
+        valid_Name = true;
+        checkForm();
+        Temp_Customer_Name = Customer_Name;
 
+    }
+}
+function processPhoneNum(){
+    var Customer_Phone_Number = encodeURIComponent(document.getElementById("Customer_Phone_Number").value);
     if(Customer_Phone_Number ==""){
-        // alert("A phone number must be entered.")
+        var ErrorElement = document.getElementById("Customer_Phone_Result");
+        ErrorPost(ErrorElement," A phone number must be entered.");
+        valid_PhoneNum = false;
+        checkForm();
+    }else{
+        valid_PhoneNum = true;
+        checkForm();
+        Temp_Customer_Phone_Number = Customer_Phone_Number;
     }
-
+}
+function processStreetName(){
+    var Customer_Pickup_StreetName = encodeURIComponent(document.getElementById("Customer_Pickup_StreetName").value);
     if(Customer_Pickup_StreetName ==""){
-        // alert("A street name must be entered!");
-    }
-
-    //We have converted the user inputted date to a Date Object, we can compare the current Date with the user inputted date.
-    if(Customer_Pickup_Date == "Invalid Date"){
-        // alert("You need to enter a date!");
-    }else {
-        if (Customer_Pickup_Date < currentdate) {
-
-            // alert("You cannot book a taxi in the past!");
-            console.log("current Date" + currentdate);
-        } else {
-            console.log("current Date " + currentdate);
-            console.log("inputted date " + (Customer_Pickup_Date));
-            Customer_Pickup_Date = encodeURIComponent(document.getElementById("Customer_Pickup_Date").value);
-        }
-    }
-
-    if(Customer_Pickup_Suburb ==""){
-        // alert("A suburb must be entered!");
-    }
-    if(Customer_Pickup_Unit == ""){
-        Customer_Address = Customer_Pickup_StreetName +", " + Customer_Pickup_Suburb;
-        console.log(decodeURI(Customer_Address));
+        var ErrorElement = document.getElementById("Customer_Pickup_StreetName_Results");
+        ErrorPost(ErrorElement," Please enter a real street name!");
+        valid_StreetName = false;
+        checkForm();
     }else{
-        Customer_Address = Customer_Pickup_StreetName +", "+ Customer_Pickup_Unit +", "+ Customer_Pickup_Suburb;
-        console.log(decodeURI(Customer_Address));
+        valid_StreetName = true;
+        checkForm();
+        Temp_Customer_Pickup_StreetName = Customer_Pickup_StreetName;
     }
+}
+function processPickUpDate(){
+    var currentdate = new Date();
+    var Customer_Pickup_Date = encodeURIComponent(document.getElementById("Customer_Pickup_Date").value);
+    var Customer_Pickup_Date_Model = new Date(document.getElementById("Customer_Pickup_Date").value);
 
-    if(Customer_Pickup_Suburb ==""){
-        // alert("A suburb must be entered!");
-    }else{
-
+    if(Customer_Pickup_Date =="" || Customer_Pickup_Date == "Invalid Date") {
+        var ErrorElement = document.getElementById("Customer_Pickup_Date_Result");
+        ErrorPost(ErrorElement," Please enter a valid date!");
     }
+    else if(Customer_Pickup_Date_Model < currentdate) {
+        var ErrorElement = document.getElementById("Customer_Pickup_Date_Result");
+            ErrorPost(ErrorElement," You cannot book a taxi in the past!");
+    }
+    else {
+        valid_PickupDate = true;
+        checkForm();
+            }
+}
+function processPickupSuburb() {
+    var Customer_Pickup_Suburb = encodeURIComponent(document.getElementById("Customer_Pickup_Suburb").value);
+    if(Customer_Pickup_Suburb == ""){
+        var ErrorElement = document.getElementById("Customer_Pickup_Suburb_Result");
+        ErrorPost(ErrorElement," Please input a valid Suburb!");
+        valid_Pickup_Suburb = false;
+        checkForm();
+    }
+    else{
+        valid_Pickup_Suburb = true;
+        checkForm();
+        Temp_Customer_Pickup_Suburb = Customer_Pickup_Suburb;
+    }
+}
+function processDestinationSuburb() {
+    var Customer_Destination_Suburb = encodeURIComponent(document.getElementById("Customer_Destination_Suburb").value);
+    if(Customer_Destination_Suburb == ""){
+        var ErrorElement = document.getElementById("Customer_Destination_Suburb_Result");
+        ErrorPost(ErrorElement," Please input a valid Suburb!");
+        valid_Destination_Suburb = false;
+        checkForm();
+    }
+    else{
+        valid_Destination_Suburb = true;
+        checkForm();
+        Temp_Customer_Destination_Suburb = Customer_Destination_Suburb;
+    }
+}
 
+function stripName() {
+    var Customer_Name_Result = (document.getElementById("Customer_Name_Result"));
+    Customer_Name_Result.innerHTML = "";
+}
+function stripPhone(){
+    var Customer_Phone_Result = (document.getElementById("Customer_Phone_Result"));
+    Customer_Phone_Result.innerHTML ="";
+}
+function stripStreet(){
+    var Customer_Pickup_StreetName = (document.getElementById("Customer_Pickup_StreetName_Results"));
+    Customer_Pickup_StreetName.innerHTML ="";
+}
+function stripDate(){
+    var Customer_Pickup_Date = (document.getElementById("Customer_Pickup_Date_Result"));
+    Customer_Pickup_Date.innerHTML ="";
+}
+function stripPickupSuburb(){
+    var Customer_Pickup_Suburb = (document.getElementById("Customer_Pickup_Suburb_Result"));
+    Customer_Pickup_Suburb.innerHTML ="";
+}
+function stripDestinationSuburb(){
+    var Customer_Destination_Suburb = (document.getElementById("Customer_Destination_Suburb_Result"));
+    Customer_Destination_Suburb.innerHTML ="";
+}
+
+function checkForm() {
+    if ((valid_Name == true) && (valid_PhoneNum == true) && (valid_StreetName == true) && (valid_PickupDate == true) && (valid_Pickup_Suburb == true) && (valid_Destination_Suburb == true)) {
+        submission.innerHTML = '<button type="button" ' +
+            'class="btn btn-block btn-success btn-lg text-center"' +
+            ' id="submission" onclick="sendData()">Request a Cab!</button>';
+        console.log("should get here");
+    }
+    else if((!valid_Name) || (!valid_PhoneNum) || (!valid_StreetName) || (!valid_PickupDate) || (!valid_Pickup_Suburb) || (!valid_Destination_Suburb)) {
+        console.log("should get here 33");
+        submission.innerHTML = '<button type="button" ' +
+            'class="btn btn-block btn-success btn-lg text-center"' +
+            ' id="submission" ' +
+            'onclick="sendData()" ' +
+            'disabled>Request a Cab!</button>';
+    }
+}
+
+function sendData() {
+    console.log("sendData Function Triggered.");
+    Customer_Address = Temp_Customer_Pickup_StreetName +", "+ Temp_Customer_Pickup_Suburb;
+    console.log(Customer_Address);
     var request = new XMLHttpRequest();
     var url = "functions.php";
-    var params = "action=request-cab&name=" + Customer_Name + "&phone=" + Customer_Phone_Number + "&address=" + Customer_Address + "&destination=" + Customer_Pickup_Suburb + "&time=" + Customer_Pickup_Date;
+    var params = "action=request-cab" +
+        "&name=" + Temp_Customer_Name +
+        "&phone=" + Temp_Customer_Phone_Number +
+        "&address=" + Customer_Address +
+        "&destination=" + Temp_Customer_Destination_Suburb +
+        "&time=" + Customer_Pickup_Date;
 
     request.open("POST", url, true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-    request.onreadystatechange = function()
-    {
+    request.onreadystatechange = function() {
         console.log("State changed");
         if (request.readyState == 4 && request.status == 200)
         {
@@ -90,11 +178,4 @@ submission.onclick = function sendData() {
         }
     }
     request.send(params);
-}
-
-function strip()
-{
-    var CustomerError = document.getElementById("Customer_Name_Result");
-    // var tmp = document.createElement("DIV");
-    CustomerError.innerHTML = "";
 }

@@ -3,9 +3,8 @@
     <title>Cabs Online</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/helper.css">
-    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script> <!-- JQuery is only being used for bootstraps dropdown menu. -->
     <script src="js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <div class="container">
@@ -21,20 +20,23 @@
         <div class="form-group form-group">
             <label class="col-lg-2 control-label" for="formGroupInputLarge">Name</label>
             <div class="col-lg-3">
-                <input onclick="strip()" class="form-control" type="text" id="Customer_Name" placeholder="Please Enter your name" name="Customer_Name" required>
+                <input onfocus="stripName()" onblur="processName()" class="form-control" type="text" id="Customer_Name" placeholder="Please Enter your name" name="Customer_Name" required>
+                 <!--Below we render an error alert if the user puts in invalid or non existant information.-->
                 <div id="Customer_Name_Result" aria-hidden="true"></div>
             </div>
         </div> <!--Customer Name End-->
         <div class="form-group form-group">
             <label class="col-lg-2 control-label" for="formGroupInputLarge">Phone Number</label>
             <div class="col-lg-3">
-                <input class="form-control" type="tel" id="Customer_Phone_Number" placeholder="Please Enter your phone number" name="Customer_Phone_Number" required>
+                <input onfocus="stripPhone()" onblur="processPhoneNum()" class="form-control" type="tel" id="Customer_Phone_Number" placeholder="Please Enter your phone number" name="Customer_Phone_Number" required>
+                <div id="Customer_Phone_Result" aria-hidden="true"></div>
             </div>
         </div> <!--Customer Phone Number End-->
         <div class="form-group form-group">
             <label class="col-lg-2 control-label" for="formGroupInputLarge">Street Name</label>
             <div class="col-lg-3">
-                <input class="form-control" type="text" id="Customer_Pickup_StreetName" placeholder="Please Enter your StreetName" name="Customer_Pickup_StreetName" required>
+                <input onfocus="stripStreet()" onblur="processStreetName()" class="form-control" type="text" id="Customer_Pickup_StreetName" placeholder="Please Enter your StreetName" name="Customer_Pickup_StreetName" required>
+                <div id="Customer_Pickup_StreetName_Results" aria-hidden="true"></div>
             </div>
         </div> <!--Customer PickUp Address End-->
         <div class="form-group form-group">
@@ -46,7 +48,8 @@
         <div class="form-group form-group">
             <label class="col-lg-2 control-label" for="formGroupInputLarge">Pickup Date</label>
             <div class="col-lg-3">
-                <input class="form-control" type="datetime-local" id="Customer_Pickup_Date" placeholder="Eg. 23/12/1252" name="Customer_Pickup_Date" autocomplete="on" required>
+                <input class="form-control" onfocus="stripDate()" onblur="processPickUpDate()" type="datetime-local" id="Customer_Pickup_Date" placeholder="Eg. 23/12/1252" name="Customer_Pickup_Date" autocomplete="on" required>
+                <div id="Customer_Pickup_Date_Result" aria-hidden="true"></div>
             </div>
         </div> <!--Customer PickUp Date End-->
         <div class="form-group form-group">
@@ -56,8 +59,9 @@
                         <span class="input-group-btn">
                   <button class="btn btn-primary dropdown-toggle" id="btn_dropdown_pickup" type="button" data-toggle="dropdown">Suburbs<span class="caret"></span></button>
                             <ul class="dropdown-menu scrollable-menu" id="areaList_pickup"></ul></span>
-                        <input class="form-control" type="text" id="Customer_Pickup_Suburb" placeholder="Please your Suburb" name="Customer_Pickup_Suburb" required>
+                        <input class="form-control" type="text" onfocus="stripPickupSuburb()" onblur="processPickupSuburb()" id="Customer_Pickup_Suburb" placeholder="Please your Suburb" name="Customer_Pickup_Suburb" autocomplete="on" required>
                     </div>
+                <div id="Customer_Pickup_Suburb_Result" aria-hidden="true"></div>
             </div>
         </div> <!--Customer PickUp Suburb End-->
     </form> <!-- Customer Form ends.-->
@@ -73,21 +77,19 @@
             <div class="col-lg-3">
                 <div class="input-group">
                         <span class="input-group-btn">
-                  <button class="btn btn-primary dropdown-toggle" id="btn_dropdown_destination" type="button" data-toggle="dropdown">Suburbs
-                        <span class="caret"></span></button>
-                            <ul class="dropdown-menu scrollable-menu" id="areaList_dest"></ul>
-                </span>
-                    <input class="form-control" type="text" id="Customer_Destination_Suburb" placeholder="Please your Suburb" name="Customer_Destination_Suburb" required>
+                  <button class="btn btn-primary dropdown-toggle" id="btn_dropdown_destination" type="button" data-toggle="dropdown">Suburbs<span class="caret"></span></button>
+                            <ul class="dropdown-menu scrollable-menu" id="areaList_dest"></ul></span>
+                    <input class="form-control" type="text" onblur="processDestinationSuburb()" onfocus="stripDestinationSuburb()" id="Customer_Destination_Suburb" placeholder="Please your Suburb" name="Customer_Destination_Suburb" required>
                 </div>
+                <div id="Customer_Destination_Suburb_Result" aria-hidden="true"></div>
             </div>
         </div>
         </form>
     </div>
 
-    <div class="well well-lg">
-            <button type="button" class="btn btn-block btn-success btn-lg text-center" id="submission">Request a Cab!</button>
+    <div id="SubmissionWell" class="well well-lg">
+            <button type="button" class="btn btn-block btn-success btn-lg text-center" id="submission" onclick="sendData()" disabled>Request a Cab!</button>
     </div>
-
     <div id="results">
     </div>
 
@@ -95,7 +97,5 @@
 </body>
 <script type="text/javascript" src="bookingFunctions.js"> </script>
 <script type="text/javascript" src="listHelper.js"> </script>
-
-
 </html>
 
