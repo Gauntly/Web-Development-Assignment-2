@@ -52,18 +52,43 @@ function postResult($customer_name,$result_code, $customer_pickup_time, $custome
     echo '</div>';
 }
 
+    function prettifyDate($dateString){
+        $customer_pickup_date = substr($dateString,0,10);
+        $customer_pickup_date = date('d-m-Y', strtotime($customer_pickup_date));
+        return $customer_pickup_date;
+    }
+    function prettifyTime($dateString){
+        $customer_pickup_time = substr($dateString,11,5);
+        $customer_pickup_time =  date('h:i a', strtotime($customer_pickup_time));
+        return $customer_pickup_time;
+    }
+
 function retrieveResults($connection){
     mysqli_select_db($connection, 'dfs6572');
 //    $booking_get = mysqli_real_escape_string($connection, $_POST['customer_booking_number']);
-
-    $sql = "SELECT * FROM CabsOnlineBookings WHERE DATE_ADD(NOW(), INTERVAL 2 HOUR) > customer_pickup_time AND customer_pickup_time > CURRENT_TIMESTAMP";
+//    > customer_pickup_time AND customer_pickup_time > CURRENT_TIMESTAMP
+    $sql = "SELECT * FROM CabsOnlineBookings WHERE DATE_ADD(NOW(), INTERVAL 2 HOUR)";
 
     $results = mysqli_query($connection, $sql);
     if ($results->num_rows > 0) // We have bookings in the next two hours - Display it in a table format
     {
-        echo("Kill confirmed.");
-    }else{
-        echo("test.");
+
+        while($row = $results->fetch_assoc()){
+            $time = prettifyTime($row['customer_pickup_time']);
+            $date = prettifyDate($row['customer_pickup_date']);
+            echo("<ul class='list-group'>");
+            echo "<li class='list-group-item'><b>"."Booking Number: ".'</b><span class="text-info">'.$row['customer_booking_number']."</span>
+                  <li class='list-group-item'><b>"."Name: ".'</b><span class="text-info">'.$row['customer_name']." 
+                  <li class='list-group-item'><b>"."Phone Number: ".'</b><span class="text-info">'.$row['customer_phone'] ."
+                  <li class='list-group-item'><b>"."Pickup Address: ".'</b><span class="text-info">'.$row['customer_address'] ."</span> ⟶ <b>"."Destination Address: ".'</b><span class="text-info">'.$row['customer_destination_address'] ."
+                  <li class='list-group-item'><b>"."Pickup Date: ".'</b><span class="text-info">'.$date."
+                  <li class='list-group-item'><b>"."Pickup Time: ".'</b><span class="text-info">'.$time."
+                  <li class='list-group-item'><b>"."Booking Status: ".'</b><span class="text-info">'.$row['customer_status'] ." </li>";
+            echo("</ul>");
+        }
+
+    }else if($results->num_rows == 0){
+        echo("0 rows.");
     }
 }
 ?>
