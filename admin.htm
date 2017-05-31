@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>Cabs Online</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/helper.css">
+    <script src="js/jquery-3.2.1.min.js"></script> <!-- JQuery is only being used for bootstraps dropdown menu. -->
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1 class="display-3">Cabs Online Booking System</h1>
+    </div>
+
+    <div class="well well-lg">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"></button>
+                    <a class="navbar-brand" href="booking.htm">Cabs Online</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="booking.htm">Create Booking</a></li>
+                        <li class="active"><a href="admin.htm">Admin<span class="sr-only">(current)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <form class="text-center" method="post" action="functions.php">
+            <h3 class=text-center">Booking Requests</h3>
+                <div class="input-group text-center">
+                    <input type="text" name="RefCodeSearch" id="RefCodeSearch" class="form-control" placeholder="Search for..." required>
+                    <span class="input-group-btn">
+                     <button class="btn btn-success" type="submit" id="btn_request_data" onclick="retrieveData()">Search!</button>
+                    </span>
+                </div>
+        </form>
+        <!--The div below will be populated with code to create the table of retrieved results.-->
+        <div id="bookings"></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="bookingFunctions.js"> </script>
+</html>
