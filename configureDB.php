@@ -16,13 +16,13 @@ function checksExist($connection)
 }
 
 function createTable($connection){
-    $createQuery = "CREATE TABLE CabsOnlineBookings(customer_booking_number VARCHAR(255) PRIMARY KEY,
+    $createQuery = "CREATE TABLE CabsOnlineBookings(customer_booking_number VARCHAR(8) PRIMARY KEY,
     customer_name VARCHAR(255),
-    customer_phone VARCHAR(255),
+    customer_phone VARCHAR(12),
     customer_address VARCHAR(255),
     customer_destination_address VARCHAR(255),
     customer_pickup_date VARCHAR(255),
-    customer_pickup_time TIMESTAMP,
+    customer_pickup_time DateTime NOT NULL,
     customer_status VARCHAR(255))";
     mysqli_query($connection, $createQuery);
 }

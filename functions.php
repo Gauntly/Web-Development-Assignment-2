@@ -15,6 +15,9 @@ if($_POST){
     else if($_POST['action'] == "get"){
         retrieveResults($connection);
         die();
+    }else if($_POST['action']=="update"){
+        updateBooking($connection,$customer_booking_number);
+        die();
     }
 }
 
@@ -67,8 +70,7 @@ function retrieveResults($connection){
     mysqli_select_db($connection, 'dfs6572');
 //    $booking_get = mysqli_real_escape_string($connection, $_POST['customer_booking_number']);
 //    > customer_pickup_time AND customer_pickup_time > CURRENT_TIMESTAMP
-    $sql = "SELECT * FROM CabsOnlineBookings WHERE DATE_ADD(NOW(), INTERVAL 2 HOUR)";
-
+    $sql = "SELECT * FROM CabsOnlineBookings WHERE DATE_ADD(NOW(), INTERVAL 2 HOUR) > customer_pickup_time";
     $results = mysqli_query($connection, $sql);
     if ($results->num_rows > 0) // We have bookings in the next two hours - Display it in a table format
     {
@@ -77,7 +79,7 @@ function retrieveResults($connection){
             $time = prettifyTime($row['customer_pickup_time']);
             $date = prettifyDate($row['customer_pickup_date']);
             echo("<ul class='list-group'>");
-            echo "<li class='list-group-item'><b>"."Booking Number: ".'</b><span class="text-info">'.$row['customer_booking_number']."</span>
+            echo "<li class='list-group-item' id=".$row['customer_booking_number']."><b>"."Booking Number: ".'</b><span class="text-info">'.$row['customer_booking_number']."</span>
                   <li class='list-group-item'><b>"."Name: ".'</b><span class="text-info">'.$row['customer_name']." 
                   <li class='list-group-item'><b>"."Phone Number: ".'</b><span class="text-info">'.$row['customer_phone'] ."
                   <li class='list-group-item'><b>"."Pickup Address: ".'</b><span class="text-info">'.$row['customer_address'] ."</span> ⟶ <b>"."Destination Address: ".'</b><span class="text-info">'.$row['customer_destination_address'] ."
@@ -90,5 +92,13 @@ function retrieveResults($connection){
     }else if($results->num_rows == 0){
         echo("0 rows.");
     }
+}
+
+function updateBooking($connection,$customer_booking_number){
+    $reference  = ($customer_booking_number);
+    $sql = "UPDATE CabsOnlineBookings SET customer_status='assigned' WHERE $customer_booking_number='$reference'";
+    mysqli_query($connection,$sql);
+    die();
+
 }
 ?>

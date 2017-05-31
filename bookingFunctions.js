@@ -204,3 +204,21 @@ function retrieveData() {
     }
     request.send(params);
 }
+//Nearly working.
+function updateData($id) {
+    var data = document.getElementById($id);
+    var request = new XMLHttpRequest();
+    var url = "functions.php";
+    var params = "action=update";
+
+    request.open("POST", url, true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    request.onreadystatechange = function() {
+        console.log("State changed on Admin page");
+        if (request.readyState == 4 && request.status == 200) {
+            console.log("we get to 4th ready state successfully.");
+            data.innerHTML = request.responseText;
+        }
+    }
+    request.send(params);
+}
