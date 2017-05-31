@@ -1,10 +1,11 @@
-
-// var submission = document.getElementById("submission");
 var submission = document.getElementById("SubmissionWell");
 var Customer_Address = "";
+var Regex_Name = new RegExp(/^[a-zA-Z ]{2,30}$/);
+var Regex_Street = new RegExp(/^\d+[ ](?:[A-Za-z0-9.-]+[ ]?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Place|Ave|Dr|Rd|Blvd|Ln|St|Pl)\.?/);
+var Regex_NZPhone = new RegExp(/^(((\+?64\s*[-\.]?[3-9]|\(?0[3-9]\)?)\s*[-\.]?\d{3}\s*[-\.]?\d{4})|((\+?64\s*[-\.\(]?2\d{1}[-\.\)]?|\(?02\d{1}\)?)\s*[-\.]?\d{3}\s*[-\.]?\d{3,5})|((\+?64\s*[-\.]?[-\.\(]?800[-\.\)]?|[-\.\(]?0800[-\.\)]?)\s*[-\.]?\d{3}\s*[-\.]?(\d{2}|\d{5})))$/);
 
 var Temp_Customer_Name = "";
-var Temp_Customer_Phone_Number = 5;
+var Temp_Customer_Phone_Number = "';
 var Temp_Customer_Pickup_StreetName ="";
 var Temp_Customer_Pickup_Suburb = "";
 var Temp_Customer_Pickup_Date;
@@ -27,43 +28,47 @@ function ErrorPost(ErrorElement,Error_message){
 }
 
 function processName() {
-    var Customer_Name = encodeURIComponent(document.getElementById("Customer_Name").value);
-    if(Customer_Name == ""){
+    var Customer_Name = (document.getElementById("Customer_Name").value);
+    if (Regex_Name.test(Customer_Name)) {
+        Customer_Name = encodeURIComponent(document.getElementById("Customer_Name").value);
+        valid_Name = true;
+        checkForm();
+        Temp_Customer_Name = Customer_Name;
+    } else{
         var ErrorElement = document.getElementById("Customer_Name_Result");
         ErrorPost(ErrorElement," You need to enter a name!");
         valid_Name = false;
         checkForm();
-    }else{
-        valid_Name = true;
-        checkForm();
-        Temp_Customer_Name = Customer_Name;
-
     }
 }
 function processPhoneNum(){
-    var Customer_Phone_Number = encodeURIComponent(document.getElementById("Customer_Phone_Number").value);
-    if(Customer_Phone_Number ==""){
-        var ErrorElement = document.getElementById("Customer_Phone_Result");
-        ErrorPost(ErrorElement," A phone number must be entered.");
-        valid_PhoneNum = false;
-        checkForm();
-    }else{
+    var Customer_Phone_Number = (document.getElementById("Customer_Phone_Number").value);
+    if(Regex_NZPhone.test(Customer_Phone_Number)) {
+        Customer_Phone_Number = encodeURIComponent(document.getElementById("Customer_Phone_Number").value);
         valid_PhoneNum = true;
         checkForm();
         Temp_Customer_Phone_Number = Customer_Phone_Number;
     }
+    else{
+        var ErrorElement = document.getElementById("Customer_Phone_Result");
+        ErrorPost(ErrorElement," A phone number must be entered.");
+        valid_PhoneNum = false;
+        checkForm();
+    }
 }
 function processStreetName(){
-    var Customer_Pickup_StreetName = encodeURIComponent(document.getElementById("Customer_Pickup_StreetName").value);
-    if(Customer_Pickup_StreetName ==""){
+    var Customer_Pickup_StreetName = (document.getElementById("Customer_Pickup_StreetName").value);
+    if(Regex_Street.test(Customer_Pickup_StreetName)){
+        Customer_Pickup_StreetName = encodeURIComponent(document.getElementById("Customer_Pickup_StreetName").value);
+        valid_StreetName = true;
+        checkForm();
+        Temp_Customer_Pickup_StreetName = Customer_Pickup_StreetName;
+    }
+    else{
         var ErrorElement = document.getElementById("Customer_Pickup_StreetName_Results");
         ErrorPost(ErrorElement," Please enter a real street name!");
         valid_StreetName = false;
         checkForm();
-    }else{
-        valid_StreetName = true;
-        checkForm();
-        Temp_Customer_Pickup_StreetName = Customer_Pickup_StreetName;
     }
 }
 function processPickUpDate(){
@@ -82,6 +87,7 @@ function processPickUpDate(){
     else {
         valid_PickupDate = true;
         checkForm();
+        Temp_Customer_Pickup_Date = Customer_Pickup_Date;
             }
 }
 function processPickupSuburb() {
@@ -140,14 +146,14 @@ function stripDestinationSuburb(){
 
 function checkForm() {
     if ((valid_Name == true) && (valid_PhoneNum == true) && (valid_StreetName == true) && (valid_PickupDate == true) && (valid_Pickup_Suburb == true) && (valid_Destination_Suburb == true)) {
-        submission.innerHTML = '<button type="button" ' +
+        submission.innerHTML = '<button type="submit" '+
             'class="btn btn-block btn-success btn-lg text-center"' +
             ' id="submission" onclick="sendData()">Request a Cab!</button>';
-        console.log("should get here");
     }
     else if((!valid_Name) || (!valid_PhoneNum) || (!valid_StreetName) || (!valid_PickupDate) || (!valid_Pickup_Suburb) || (!valid_Destination_Suburb)) {
         console.log("should get here 33");
-        submission.innerHTML = '<button type="button" ' +
+        // console.log("(valid_Name)" + (valid_Name) + "(valid_PhoneNum)" + (valid_PhoneNum) + "(valid_StreetName)" + valid_StreetName + "valid_PickupDate" + valid_PickupDate + "valid_Pickup_Suburb" + valid_Pickup_Suburb + "valid_Destination_Suburb"+ valid_Destination_Suburb);
+        submission.innerHTML = '<button type="submit" ' +
             'class="btn btn-block btn-success btn-lg text-center"' +
             ' id="submission" ' +
             'onclick="sendData()" ' +
@@ -166,15 +172,34 @@ function sendData() {
         "&phone=" + Temp_Customer_Phone_Number +
         "&address=" + Customer_Address +
         "&destination=" + Temp_Customer_Destination_Suburb +
-        "&time=" + Customer_Pickup_Date;
+        "&time=" + Temp_Customer_Pickup_Date;
 
     request.open("POST", url, true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
     request.onreadystatechange = function() {
         console.log("State changed");
+        console.log()
         if (request.readyState == 4 && request.status == 200)
         {
             document.getElementById("results").innerHTML = request.responseText;
+        }
+    }
+    request.send(params);
+}
+
+function retrieveData() {
+    var data = document.getElementById("bookings");
+    var request = new XMLHttpRequest();
+    var url = "functions.php";
+    var params = "action=get";
+
+    request.open("POST", url, true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    request.onreadystatechange = function() {
+        console.log("State changed on Admin page");
+        if (request.readyState == 4 && request.status == 200) {
+            console.log("we get to 4th ready state successfully.");
+            data.innerHTML = request.responseText;
         }
     }
     request.send(params);

@@ -1,3 +1,5 @@
+
+
 <html>
 <head>
     <title>Cabs Online</title>
@@ -13,6 +15,20 @@
     </div>
 
 <div class="well well-lg">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"></button>
+                <a class="navbar-brand" href="booking.htm">Cabs Online</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="booking.htm">Create Booking <span class="sr-only">(current)</span></a></li>
+                    <li><a href="admin.htm">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!--This Form handles Customer Name-->
     <form class="form-horizontal" method="get" action="" id="Customer-Pickup">
         <h3 class="display-3">Pickup</h3>
@@ -48,7 +64,7 @@
         <div class="form-group form-group">
             <label class="col-lg-2 control-label" for="formGroupInputLarge">Pickup Date</label>
             <div class="col-lg-3">
-                <input class="form-control" onfocus="stripDate()" onblur="processPickUpDate()" type="datetime-local" id="Customer_Pickup_Date" placeholder="Eg. 23/12/1252" name="Customer_Pickup_Date" autocomplete="on" required>
+                <input class="form-control" onfocus="stripDate()" onblur="processPickUpDate()" type="datetime-local"  id="Customer_Pickup_Date" name="Customer_Pickup_Date" autocomplete="on" required>
                 <div id="Customer_Pickup_Date_Result" aria-hidden="true"></div>
             </div>
         </div> <!--Customer PickUp Date End-->
@@ -88,9 +104,10 @@
     </div>
 
     <div id="SubmissionWell" class="well well-lg">
-            <button type="button" class="btn btn-block btn-success btn-lg text-center" id="submission" onclick="sendData()" disabled>Request a Cab!</button>
+            <button type="reset" class="btn btn-block btn-success btn-lg text-center" id="submission" onclick="sendData()" disabled>Request a Cab!</button>
     </div>
     <div id="results">
+
     </div>
 
 </div>  <!--Container ends.-->
