@@ -30,11 +30,11 @@
 
         <form onsubmit="return false">
         <h3 class=text-center">Booking Requests <button class="btn btn-success" type="button" id="btn_request_data" onclick="retrieveData()">Retrieve Bookings</button></h3>
-
+                <div id="idResults"></div>
                 <div class="input-group text-center">
                     <input type="text" name="RefCodeSearch" id="RefCodeSearch" class="form-control" placeholder="Booking Number..." required>
                     <span class="input-group-btn">
-                     <button class="btn btn-success" type="submit" onclick="updateData()" id="set_active">Accept</button>
+                     <button class="btn btn-success" type="submit" onclick="updateData()" id="set_active">Assign</button>
                     </span>
                 </div>
         </form>

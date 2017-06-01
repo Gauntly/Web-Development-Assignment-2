@@ -205,19 +205,29 @@ function retrieveData() {
     request.send(params);
 }
 //Nearly working.
-function updateData($id) {
-    var data = document.getElementById($id);
+function updateData() {
+    var idResults = document.getElementById("idResults")
+    var data = document.getElementById("RefCodeSearch").value;
     var request = new XMLHttpRequest();
     var url = "functions.php";
-    var params = "action=update";
+    var params = "action=update&id="+data;
+    idResults.innerHTML = data;
 
     request.open("POST", url, true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
     request.onreadystatechange = function() {
+        console.log(data);
         console.log("State changed on Admin page");
         if (request.readyState == 4 && request.status == 200) {
             console.log("we get to 4th ready state successfully.");
-            data.innerHTML = request.responseText;
+            //nice little cheap trick to quicky post success or failure of allocating taxi.
+            if(request.responseText === "Success"){
+                idResults.innerHTML = "<h1 class='text-center'>The booking request " + data+ " has been properly assigned</h1>";
+                retrieveData();
+            }else{
+                idResults.innerHTML = "<h1 class='text-center'>The booking request has failed to be processed.</h1>";
+            }
+
         }
     }
     request.send(params);
