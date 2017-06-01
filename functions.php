@@ -7,12 +7,14 @@ if (!$connection) {
     checksExist($connection);
 }
 $result_code = "";
+
+//Looks at the XHR for the params.
 if($_POST){
     if($_POST['action'] == "request-cab"){
     processRequest($connection);
     die();
     }
-    else if($_POST['action'] == "get"){
+    else if($_POST['action'] == "retrieve"){
         retrieveResults($connection);
         die();
     }else if($_POST['action']=="update"){
@@ -20,7 +22,8 @@ if($_POST){
     }
 }
 
-
+//processRequest submits the data to the DB. No checking is done at this point.
+//I explicitly made sure it was all handled by the js.
 function processRequest($connection){
     $customer_name = mysqli_real_escape_string($connection, $_POST['name']);
     $customer_phone = mysqli_real_escape_string($connection, $_POST['phone']);
@@ -36,11 +39,13 @@ function processRequest($connection){
     mysqli_query($connection,$sql);
 
 }
+
 //We generate a unique reference code using the address and using md5 crypto jumbling it before making the string all uppercase and returning the value.
 function generateReference(){
     $jumble = substr(str_shuffle(md5($_POST['address'])),0,8);
     return strtoupper($jumble);
 }
+
 // Processing the results we can return meaning confirmation to the user that the booking has been created.
 function postResult($customer_name,$result_code, $customer_pickup_time, $customer_pickup_date, $customer_address){
     $customer_pickup_time =  date('h:i a', strtotime($customer_pickup_time));
@@ -54,6 +59,7 @@ function postResult($customer_name,$result_code, $customer_pickup_time, $custome
     echo '</div>';
 }
 
+//Trivial functions that essentially just present the time and the date in a very user friendly way.
     function prettifyDate($dateString){
         $customer_pickup_date = substr($dateString,0,10);
         $customer_pickup_date = date('d-m-Y', strtotime($customer_pickup_date));
@@ -67,12 +73,12 @@ function postResult($customer_name,$result_code, $customer_pickup_time, $custome
 
 function retrieveResults($connection){
     mysqli_select_db($connection, 'dfs6572');
-//    $booking_get = mysqli_real_escape_string($connection, $_POST['customer_booking_number']);
-//    > customer_pickup_time AND customer_pickup_time > CURRENT_TIMESTAMP
     $sql = "SELECT * FROM CabsOnlineBookings WHERE DATE_ADD(NOW(), INTERVAL 2 HOUR) > customer_pickup_time AND customer_pickup_time > CURRENT_TIME";
     $results = mysqli_query($connection, $sql);
-    if ($results->num_rows > 0) // We have bookings in the next two hours - Display it in a table format
-    {
+    //If bookings are made in the next 2 hours display them here.
+    //We render some nice bootstrap styled html here.
+    //Since the last assignment ive learnt that I could just use one echo call the generate all the html.
+    if ($results->num_rows > 0) {
 
         while($row = $results->fetch_assoc()){
             $time = prettifyTime($row['customer_pickup_time']);
@@ -87,12 +93,14 @@ function retrieveResults($connection){
                   <li class='list-group-item'><b>"."Booking Status: ".'</b><span class="text-info">'.$row['customer_status'] ." </li>";
             echo("</ul>");
         }
-
+    //If no data was returned we send a simple error message.
     }else if($results->num_rows == 0){
         echo("No data found.");
     }
 }
 
+//we are first checking if the reference exists
+//if so we can update it. We use "Success" and "Failure" as values to render the correct html in the idResults div from the bookingFunctions.js.
 function updateBooking($connection,$reference){
     $sql = "SELECT * FROM CabsOnlineBookings WHERE customer_booking_number = '$reference'";
     $results = mysqli_query($connection,$sql);

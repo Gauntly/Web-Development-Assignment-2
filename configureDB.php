@@ -5,13 +5,12 @@ $db_password = "";
 $db_name = "";
 function checksExist($connection)
 {
-    $selectAllQuery = "SELECT * FROM username";
+    $selectAllQuery = "SELECT * FROM CabsOnlineBookings";
     $data = mysqli_query($connection, $selectAllQuery);
     if (empty($data)) {
         mysqli_query($connection,"CREATE DATABASE dfs6572");
         mysqli_select_db($connection,'dfs6572');
         createTable($connection);
-//        createData($connection);
     }
 }
 
