@@ -118,7 +118,7 @@ function processDestinationSuburb() {
         Temp_Customer_Destination_Suburb = Customer_Destination_Suburb;
     }
 }
-
+//Strip functions again feels lazy, If I spent a little more time I think I could have
 function stripName() {
     var Customer_Name_Result = (document.getElementById("Customer_Name_Result"));
     Customer_Name_Result.innerHTML = "";
@@ -204,7 +204,6 @@ function retrieveData() {
     }
     request.send(params);
 }
-//Nearly working.
 function updateData() {
     var idResults = document.getElementById("idResults")
     var data = document.getElementById("RefCodeSearch").value;
@@ -222,7 +221,7 @@ function updateData() {
             console.log("we get to 4th ready state successfully.");
             //nice little cheap trick to quicky post success or failure of allocating taxi.
             if(request.responseText === "Success"){
-                idResults.innerHTML = "<h1 class='text-center'>The booking request " + data+ " has been properly assigned</h1>";
+                idResults.innerHTML = "<h1 class='text-center'>The booking request "+"<span style='color: #449d44'>"+ data+ "</span> has been properly assigned</h1>";
                 retrieveData();
             }else{
                 idResults.innerHTML = "<h1 class='text-center'>The booking request has failed to be processed.</h1>";

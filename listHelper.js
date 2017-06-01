@@ -36,6 +36,8 @@ btn.addEventListener('click', function () {
 
 //Pulls local JSON data and creates a list that is used when the dropdown button is clicked.
 
+//Really jankey code I was hoping to create one function that
+// I could use to render both lists but I was running out of time.
 function renderListPickUp(data) {
     var ul = document.getElementById("areaList_pickup");
     for (i in data.area) {
@@ -47,6 +49,7 @@ function renderListPickUp(data) {
         htmLIST.innerHTML = '<a href="#" id="'+x+'" onclick="processPickupSuburb()" onblur="processPickupSuburb()">' +x+ '</a>';
     }
 }
+//This renderlist renders the destination dropdown menu in the button text combo box.
 function renderListDest(data) {
     var ul = document.getElementById('areaList_dest');
         for (i in data.area) {
